@@ -1,1 +1,1 @@
-# Finite-State-Visualizer
+# Finite-State-Machine Visualizer
