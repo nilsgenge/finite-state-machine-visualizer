@@ -55,15 +55,15 @@ public class ObjectHandler {
 	}
 
 	public void checkIfSelected() {
-		if (th.getCurrentTool() != null) {
-			if (th.getCurrentTool().equals(tools.EMPTY) || th.getCurrentTool().equals(tools.TRANSITION)) {
-				if (states.size() > 0) {
-					for (int i = 0; i < states.size(); i++) {
-						states.get(i).isSelected(m.getM1X(), m.getM1Y());
+			if (th.getCurrentTool() != null) {
+				if (!th.getCurrentTool().equals(tools.STATE)) {
+					if (states.size() > 0) {
+						for (int i = 0; i < states.size(); i++) {
+							states.get(i).isSelected(m.getM1X(), m.getM1Y());
+						}
 					}
 				}
-			}
-		}
+			} 
 	}
 
 	public void renderObjects(Graphics2D g2) {
@@ -94,6 +94,24 @@ public class ObjectHandler {
 				transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
 			}
 		}
+	}
+	
+	public Boolean anyObjectSelected() {
+		if(states.size() > 0) {
+			for(int a = 0; a < states.size(); a++) {
+				if(states.get(a).isSelected()) {
+					return true;
+				}
+			}
+		}
+		if(transitions.size() > 0) {
+			for(int b = 0; b < transitions.size(); b++) {
+				if(transitions.get(b).isSelected()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public void objectDeleteTriggered() {

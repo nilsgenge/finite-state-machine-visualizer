@@ -39,7 +39,7 @@ public class Transition {
 		angle = Math.atan2(deltaY, deltaX);
 
 		calcTransformPoint();
-
+		checkTransformOffsetSize();
 	}
 
 	public void render(Graphics2D g2) {
@@ -122,65 +122,75 @@ public class Transition {
 
 		double lineAngle = Math.atan2(nachfolger.getY() - vorgaenger.getY(), nachfolger.getX() - vorgaenger.getX());
 		double PI = Math.PI;
-		int mouseDistance = (int)Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-		
-		//Split in angles and adjust transformOffset accordingly
-		//LEFT
+		int mouseDistance = (int) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		// Split in angles and adjust transformOffset accordingly
+		// LEFT
 		if (lineAngle > -PI / 8 && lineAngle < PI / 8) {
-			if(deltaY > 0) {
+			if (deltaY > 0) {
 				transformOffset -= mouseDistance;
-			} else if(deltaY < 0) {
+			} else if (deltaY < 0) {
 				transformOffset += mouseDistance;
 			}
-		//LEFT TOP
+			// LEFT TOP
 		} else if (lineAngle > PI / 8 && lineAngle < 3 * PI / 8) {
-			if(deltaX > 0 && deltaY < 0) {
+			if (deltaX > 0 && deltaY < 0) {
 				transformOffset += mouseDistance;
-			} else if(deltaX < 0 && deltaY > 0) {
+			} else if (deltaX < 0 && deltaY > 0) {
 				transformOffset -= mouseDistance;
 			}
-		//TOP
+			// TOP
 		} else if (lineAngle > 3 * PI / 8 && lineAngle < 5 * PI / 8) {
-			if(deltaX > 0) {
+			if (deltaX > 0) {
 				transformOffset += mouseDistance;
-			} else if(deltaX < 0) {
+			} else if (deltaX < 0) {
 				transformOffset -= mouseDistance;
 			}
-		//RIGHT TOP
+			// RIGHT TOP
 		} else if (lineAngle > 5 * PI / 8 && lineAngle < 7 * PI / 8) {
-			if(deltaX > 0 && deltaY > 0) {
+			if (deltaX > 0 && deltaY > 0) {
 				transformOffset += mouseDistance;
-			} else if(deltaX < 0 && deltaY < 0) {
+			} else if (deltaX < 0 && deltaY < 0) {
 				transformOffset -= mouseDistance;
 			}
-		//RIGHT
+			// RIGHT
 		} else if (lineAngle > 7 * PI / 8 || lineAngle < -7 * PI / 8) {
-			if(deltaY > 0) {
+			if (deltaY > 0) {
 				transformOffset += mouseDistance;
-			} else if(deltaY < 0) {
+			} else if (deltaY < 0) {
 				transformOffset -= mouseDistance;
 			}
-		//RIGHT BOTTOM
+			// RIGHT BOTTOM
 		} else if (lineAngle > -7 * PI / 8 && lineAngle < -5 * PI / 8) {
-			if(deltaX > 0 && deltaY < 0) {
+			if (deltaX > 0 && deltaY < 0) {
 				transformOffset -= mouseDistance;
-			} else if(deltaX < 0 && deltaY > 0) {
+			} else if (deltaX < 0 && deltaY > 0) {
 				transformOffset += mouseDistance;
 			}
-		//BOTTOM
+			// BOTTOM
 		} else if (lineAngle > -5 * PI / 8 && lineAngle < -3 * PI / 8) {
-			if(deltaX > 0) {
+			if (deltaX > 0) {
 				transformOffset -= mouseDistance;
-			} else if(deltaX < 0) {
+			} else if (deltaX < 0) {
 				transformOffset += mouseDistance;
 			}
-		//LEFT BOTTOM
+			// LEFT BOTTOM
 		} else if (lineAngle > -3 * PI / 8 && lineAngle < -PI / 8) {
-			if(deltaX < 0 && deltaY < 0) {
+			if (deltaX < 0 && deltaY < 0) {
 				transformOffset += mouseDistance;
-			} else if(deltaX > 0 && deltaY > 0) {
+			} else if (deltaX > 0 && deltaY > 0) {
 				transformOffset -= mouseDistance;
 			}
+		}
+		
+		checkTransformOffsetSize();
+	}
+	
+	public void checkTransformOffsetSize() {
+		double distanceBetweenStates = Math.sqrt(Math.pow(vorgaenger.getX()-nachfolger.getX(), 2) + Math.pow(vorgaenger.getY()-nachfolger.getY(), 2));
+		if(transformOffset > distanceBetweenStates) {
+			transformOffset = (int)distanceBetweenStates;
+		} else if(transformOffset < -distanceBetweenStates) {
+			transformOffset = -(int)distanceBetweenStates;
 		}
 	}
 
