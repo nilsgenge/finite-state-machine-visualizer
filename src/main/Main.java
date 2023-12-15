@@ -23,7 +23,7 @@ public class Main {
 		oh = new ObjectHandler(m, th);
 		g = new GuiHandler(this, m, th);
 
-//		oh.testobjects();
+		//		oh.testobjects();
 		th.initialize();
 		r.render();
 	}

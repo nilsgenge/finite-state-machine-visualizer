@@ -1,9 +1,8 @@
 package gui;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
-
 import utilz.colortable;
 import utilz.tools;
 import workspace.ToolHandler;
@@ -31,13 +30,15 @@ public class ToolButton extends Button {
 
 		} else if (type == tools.STATE) {
 			g2.drawOval(x + (int) (width * 0.1), y + (int) (height * 0.1), (int) (width * 0.8), (int) (height * 0.8));
-			g2.drawLine(x + width / 2 + 1, y + (int) (height * 0.3) + 1, x + width / 2 + 1,
-					y + (int) (height * 0.7) + 1);
-			g2.drawLine(x + (int) (width * 0.3) + 1, y + height / 2 + 1, x + (int) (width * 0.7) + 1,
-					y + height / 2 + 1);
+			g2.drawLine(x + width / 2 + 1, y + (int) (height * 0.3) + 1, x + width / 2 + 1,y + (int) (height * 0.7) + 1);
+			g2.drawLine(x + (int) (width * 0.3) + 1, y + height / 2 + 1, x + (int) (width * 0.7) + 1,y + height / 2 + 1);
 		} else if (type == tools.TRANSITION) {
-			g2.drawLine(x + width / 2 + 1, y + (int) (height * 0.3) + 1, x + width / 2 + 1,
-					y + (int) (height * 0.7) + 1);
+			g2.drawLine(x + width / 2 + 1, y + (int) (height * 0.3) + 1, x + width / 2 + 1,y + (int) (height * 0.7) + 1);
+		}
+		 else if (type == tools.START) {
+			 g2.setFont(new Font("Arial", Font.PLAIN, 65));
+				g2.setColor(colortable.TEXT);
+				g2.drawString("S", x+20, y+63);
 		}
 	}
 

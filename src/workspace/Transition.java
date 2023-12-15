@@ -3,7 +3,6 @@ package workspace;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
-
 import utilz.Vector2D;
 import utilz.colortable;
 
@@ -20,8 +19,6 @@ public class Transition {
 	private int transformPointX;
 	private int transformPointY;
 	private int transformOffset = 0;
-	private boolean invertTransformSide = false;
-
 	private double angle;
 
 	public Transition(State vorgaenger, State nachfolger, String eingabe, String ausgabe) {
@@ -57,20 +54,19 @@ public class Transition {
 		} else {
 			g2.setColor(colortable.STROKE);
 		}
-		 g2.fillOval(transformPointX - hitboxSize / 2, transformPointY - hitboxSize / 2,
-		 hitboxSize, hitboxSize);
+		g2.fillOval(transformPointX - hitboxSize / 2, transformPointY - hitboxSize / 2, hitboxSize, hitboxSize);
 	}
-	
+
 	public void calcTransformPoint() {
 		Vector2D A = new Vector2D(vorgaenger.getX(), vorgaenger.getY());
-        Vector2D B = new Vector2D(nachfolger.getX(), nachfolger.getY());
-		
-        Vector2D M = Vector2D.findMidpoint(A, B);
-        
-        Vector2D O = Vector2D.findOrthogonalPoint(M, A, B, transformOffset, invertTransformSide);
-        
-        transformPointX = (int)O.getX();
-        transformPointY = (int)O.getY();
+		Vector2D B = new Vector2D(nachfolger.getX(), nachfolger.getY());
+
+		Vector2D M = Vector2D.findMidpoint(A, B);
+
+		Vector2D O = Vector2D.findOrthogonalPoint(M, A, B, transformOffset);
+
+		transformPointX = (int) O.getX();
+		transformPointY = (int) O.getY();
 	}
 
 	public void drawArrow(Graphics2D g2) {
@@ -181,16 +177,17 @@ public class Transition {
 				transformOffset -= mouseDistance;
 			}
 		}
-		
+		System.out.println(mouseDistance);
 		checkTransformOffsetSize();
 	}
-	
+
 	public void checkTransformOffsetSize() {
-		double distanceBetweenStates = Math.sqrt(Math.pow(vorgaenger.getX()-nachfolger.getX(), 2) + Math.pow(vorgaenger.getY()-nachfolger.getY(), 2));
-		if(transformOffset > distanceBetweenStates) {
-			transformOffset = (int)distanceBetweenStates;
-		} else if(transformOffset < -distanceBetweenStates) {
-			transformOffset = -(int)distanceBetweenStates;
+		double distanceBetweenStates = Math.sqrt(Math.pow(vorgaenger.getX() - nachfolger.getX(), 2)
+				+ Math.pow(vorgaenger.getY() - nachfolger.getY(), 2));
+		if (transformOffset > distanceBetweenStates) {
+			transformOffset = (int) distanceBetweenStates;
+		} else if (transformOffset < -distanceBetweenStates) {
+			transformOffset = -(int) distanceBetweenStates;
 		}
 	}
 

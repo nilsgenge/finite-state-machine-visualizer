@@ -20,7 +20,7 @@ public class ToolHandler {
 	public ToolHandler(Main main) {
 		this.main = main;
 	}
-	
+
 	public void initialize() {
 		this.m = main.m;
 		this.oh = main.oh;
@@ -31,16 +31,17 @@ public class ToolHandler {
 		checkDeselect();
 		checkNewState();
 		checkNewTransition();
+		checkNewStartState();
 	}
 
-	public boolean isInWorkspace(int x, int y) {
-		if (x >= 350 && y >= 100) {
-			return true;
-		} else {
-			return false;
+	public void checkNewStartState() {
+		if (currentTool.equals(tools.START)) {
+			if (isNewInput("left", m.getM1X(), m.getM1Y()) && isInWorkspace(m.getM1X(), m.getM1Y())) {
+				oh.setNewStartState();
+			}
 		}
 	}
-
+	
 	public void checkNewTransition() {
 		if (currentTool.equals(tools.TRANSITION)) {
 			if (isNewInput("left", m.getM1X(), m.getM1Y()) && isInWorkspace(m.getM1X(), m.getM1Y())) {
@@ -56,7 +57,7 @@ public class ToolHandler {
 					this.setCurrentTool(tools.EMPTY);
 					System.out.println("Tool Changed to: " + getCurrentTool());
 				}
-				oh.deselectAllZustaende();
+				oh.deselectAllStates();
 				rightMouseLastX = m.getM2X();
 				rightMouseLastY = m.getM2Y();
 			}
@@ -94,6 +95,14 @@ public class ToolHandler {
 			return false;
 		}
 
+	}
+	
+	public boolean isInWorkspace(int x, int y) {
+		if (x >= 350 && y >= 100) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public String getCurrentTool() {

@@ -2,6 +2,7 @@ package workspace;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -10,12 +11,13 @@ import utilz.colortable;
 public class State {
 
 	private String name;
-	private boolean isStart = false;
-	private boolean isSelected = false;
+	private Boolean isStartState = false;
+	private Boolean startValueChanged = false;
+	private Boolean isSelected = false;
 	private int xPos;
 	private int yPos;
 	private int radius;
-	private boolean movePending = false;
+	private Boolean movePending = false;
 
 	public State(String n, int x, int y, int r) {
 		name = n;
@@ -36,6 +38,12 @@ public class State {
 		g2.fillOval(getX() - r, getY() - r, r * 2, r * 2);
 		g2.setColor(colortable.BG_MAIN); // inner circle, bg
 		g2.fillOval(getX() - r2, getY() - r2, r2 * 2, r2 * 2);
+		
+		if(isStartState) {
+			g2.setFont(new Font("Monospaced", Font.PLAIN, 50));
+			g2.setColor(colortable.TEXT);
+			g2.drawString("S", xPos-15, yPos+15);
+		}
 	}
 
 	public void checkSelected(int mx, int my) { // MouseX, MouseY as Input
@@ -73,14 +81,6 @@ public class State {
 		this.yPos += y;
 	}
 
-	public void setStart(Boolean b) {
-		isStart = b;
-	}
-
-	public Boolean isStart() {
-		return isStart;
-	}
-
 	public void setRadius(int r) {
 		radius = r;
 	}
@@ -93,12 +93,7 @@ public class State {
 		isSelected = s;
 	}
 
-	public boolean isSelected(int mx, int my) {
-		checkSelected(mx, my);
-		return isSelected;
-	}
-
-	public boolean isSelected() {
+	public Boolean isSelected() {
 		return isSelected;
 	}
 
@@ -110,12 +105,29 @@ public class State {
 		return name;
 	}
 
-	public boolean isMoving() {
+	public Boolean isMoving() {
 		return movePending;
 	}
 
 	public void setMoving(boolean m) {
 		movePending = m;
 	}
+	
+	public Boolean isStartState() {
+		return isStartState;
+	}
+
+	public void setStartState(boolean isStartState) {
+		this.isStartState = isStartState;
+	}
+	
+	public Boolean getStartValueChanged() {
+		return startValueChanged;
+	}
+
+	public void setStartValueChanged(Boolean startValueChanged) {
+		this.startValueChanged = startValueChanged;
+	}
+
 
 }

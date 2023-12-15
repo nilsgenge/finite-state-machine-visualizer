@@ -1,14 +1,14 @@
 package gui;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.LinkedList;
 
 import inputs.MouseInputs;
-import main.*;
 import utilz.colortable;
 import utilz.tools;
 import workspace.ToolHandler;
+import workspace.Transition;
 
 public class Toolbar {
 
@@ -18,13 +18,14 @@ public class Toolbar {
 
 	private int height = 100;
 
-	private ToolButton toolButtons[];
+	private LinkedList<ToolButton> toolButtons;
 
 	public Toolbar(GuiHandler gh, MouseInputs m, ToolHandler th) {
 		this.gh = gh;
 		this.m = m;
 		this.th = th;
-
+		
+		toolButtons = new LinkedList<ToolButton>();
 		initializeToolButtons();
 	}
 
@@ -44,16 +45,16 @@ public class Toolbar {
 
 	public void renderButtons(Graphics2D g2) {
 		if (this.toolButtons != null) {
-			for (int i = 0; i < toolButtons.length; i++) {
-				toolButtons[i].render(g2);
+			for (int i = 0; i < toolButtons.size(); i++) {
+				toolButtons.get(i).render(g2);
 			}
 		}
 	}
 
 	public void updateButtons() {
 		if (this.toolButtons != null) {
-			for (int i = 0; i < toolButtons.length; i++) {
-				toolButtons[i].checkPressed(m.getM1X(), m.getM1Y());
+			for (int i = 0; i < toolButtons.size(); i++) {
+				toolButtons.get(i).checkPressed(m.getM1X(), m.getM1Y());
 			}
 		}
 	}
@@ -64,19 +65,11 @@ public class Toolbar {
 		int leftOffset = 10;
 		int topOffset = 10;
 
-		toolButtons = new ToolButton[6];
-		toolButtons[0] = new ToolButton(0 * buttonWidth + 1 * leftOffset, topOffset, buttonWidth, buttonHeight,
-				"StateTool", tools.STATE, th);
-		toolButtons[1] = new ToolButton(1 * buttonWidth + 2 * leftOffset, topOffset, buttonWidth, buttonHeight,
-				"TransitionTool", tools.TRANSITION, th);
-		toolButtons[2] = new ToolButton(2 * buttonWidth + 3 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",
-				tools.EMPTY, th);
-		toolButtons[3] = new ToolButton(3 * buttonWidth + 4 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",
-				tools.EMPTY, th);
-		toolButtons[4] = new ToolButton(4 * buttonWidth + 5 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",
-				tools.EMPTY, th);
-		toolButtons[5] = new ToolButton(5 * buttonWidth + 6 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",
-				tools.EMPTY, th);
-
+		toolButtons.add(new ToolButton(0 * buttonWidth + 1 * leftOffset, topOffset, buttonWidth, buttonHeight,"StateTool", tools.STATE, th));
+		toolButtons.add(new ToolButton(1 * buttonWidth + 2 * leftOffset, topOffset, buttonWidth, buttonHeight,"TransitionTool", tools.TRANSITION, th));
+		toolButtons.add(new ToolButton(2 * buttonWidth + 3 * leftOffset, topOffset, buttonWidth, buttonHeight, "StartTool",tools.START, th));
+		toolButtons.add(new ToolButton(3 * buttonWidth + 4 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
+		toolButtons.add(new ToolButton(4 * buttonWidth + 5 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
+		toolButtons.add(new ToolButton(5 * buttonWidth + 6 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
 	}
 }

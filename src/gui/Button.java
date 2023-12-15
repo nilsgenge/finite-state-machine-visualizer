@@ -15,5 +15,5 @@ public class Button {
 		this.height = height;
 		this.name = name;
 	}
-
+	
 }

@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-
 import inputs.MouseInputs;
 import main.*;
 import utilz.colortable;

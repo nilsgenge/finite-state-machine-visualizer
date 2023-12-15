@@ -2,7 +2,6 @@ package workspace;
 
 import java.awt.Graphics2D;
 import java.util.*;
-
 import inputs.MouseInputs;
 import utilz.tools;
 
@@ -15,15 +14,15 @@ public class ObjectHandler {
 
 	LinkedList<Transition> transitions;
 	LinkedList<State> states;
-
-	// for selection & shifting
+	
 	private int middleMouseLastX;
 	private int middleMouseLastY;
 	private int leftMouseLastX;
 	private int leftMouseLastY;
 
 	private State transitionFirstState = null;
-	private boolean transitionInProgress = false;
+	private Boolean transitionInProgress = false;
+	private Boolean somethingSelected = false;
 
 	public ObjectHandler(MouseInputs m, ToolHandler th) {
 		this.m = m;
@@ -32,46 +31,12 @@ public class ObjectHandler {
 		states = new LinkedList<State>();
 	}
 
-	public void updateObjects() {
-		checkIfSelected();
-		screenShifter();
-		zustandShifter();
-		m.updateMousePos();
-		updateTransitions();
-		 transitionShifter();
-	}
-
-	// TEMPORARY
-	public void testobjects() {
-		State z1 = new State("q1", 100, 100, 35);
-		State z2 = new State("q2", 500, 500, 35);
-//		State z3 = new State("q3", 200, 350, 35);
-				transitions.add(new Transition(z2, z1, "", ""));
-//				transitions.add(new Transition(z2, z3, "M", "T"));
-		states.add(z1);
-		states.add(z2);
-//		states.add(z3);
-		shiftZustaendePos(700, 150);
-	}
-
-	public void checkIfSelected() {
-			if (th.getCurrentTool() != null) {
-				if (!th.getCurrentTool().equals(tools.STATE)) {
-					if (states.size() > 0) {
-						for (int i = 0; i < states.size(); i++) {
-							states.get(i).isSelected(m.getM1X(), m.getM1Y());
-						}
-					}
-				}
-			} 
-	}
-
 	public void renderObjects(Graphics2D g2) {
-		renderUebergaenge(g2);
-		renderZustaende(g2);
+		renderTransitions(g2);
+		renderStates(g2);
 	}
 
-	public void renderZustaende(Graphics2D g2) {
+	public void renderStates(Graphics2D g2) {
 		if (states.size() > 0) {
 			for (int i = 0; i < states.size(); i++) {
 				states.get(i).render(g2);
@@ -79,41 +44,59 @@ public class ObjectHandler {
 		}
 	}
 
-	public void renderUebergaenge(Graphics2D g2) {
+	public void renderTransitions(Graphics2D g2) {
 		if (transitions.size() > 0) {
 			for (int i = 0; i < transitions.size(); i++) {
 				transitions.get(i).render(g2);
 			}
 		}
 	}
+	
+	public void updateObjects() {
+		checkIfSelected();
+		screenShifter();
+		stateShifter();
+		updateTransitions();
+		transitionShifter();
+		
+		resetMousePos();
+	}
 
 	public void updateTransitions() {
 		if (transitions.size() > 0) {
 			for (int i = 0; i < transitions.size(); i++) {
-				transitions.get(i).update();
-				transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
-			}
-		}
-	}
-	
-	public Boolean anyObjectSelected() {
-		if(states.size() > 0) {
-			for(int a = 0; a < states.size(); a++) {
-				if(states.get(a).isSelected()) {
-					return true;
+				if (!somethingSelected) {
+					transitions.get(i).update();
+					transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
+					if (transitions.get(i).isSelected() || transitions.get(i).isMoving()) {
+						somethingSelected = true;
+						break;
+					} 
 				}
 			}
 		}
-		if(transitions.size() > 0) {
-			for(int b = 0; b < transitions.size(); b++) {
-				if(transitions.get(b).isSelected()) {
-					return true;
+		somethingSelected = false;
+	}
+	
+	public void checkIfSelected() {
+		if (th.getCurrentTool() != null) {
+			if (!th.getCurrentTool().equals(tools.STATE)) {
+				if (states.size() > 0) {
+					for (int i = 0; i < states.size(); i++) {
+						if (!somethingSelected) {
+							states.get(i).checkSelected(m.getM1X(), m.getM1Y());
+							if (states.get(i).isSelected() || states.get(i).isMoving()) {
+								somethingSelected = true;
+								break;
+							} 
+						}
+					}
 				}
 			}
 		}
-		return false;
+		somethingSelected = false;
 	}
-	
+
 	public void objectDeleteTriggered() {
 		for (int a = 0; a < states.size(); a++) {
 			if (states.get(a).isSelected()) {
@@ -126,10 +109,25 @@ public class ObjectHandler {
 				states.remove(a);
 			}
 		}
-
 		for (int c = 0; c < transitions.size(); c++) {
 			if (transitions.get(c).isSelected()) {
 				transitions.remove(c);
+			}
+		}
+	}
+
+	public void setNewStartState() {
+		if (states.size() > 0 && anyStateSelected()) {
+			for (int i = 0; i < states.size(); i++) {
+				if(states.get(i).isStartState() && !states.get(i).isSelected()) {
+					states.get(i).setStartState(false);
+				} else if (states.get(i).isStartState() && states.get(i).isSelected()) {
+					states.get(i).setStartState(false);
+					deselectAllStates();
+				} else if (!states.get(i).isStartState() && states.get(i).isSelected()) {
+					states.get(i).setStartState(true);
+					deselectAllStates();
+				}
 			}
 		}
 	}
@@ -157,7 +155,7 @@ public class ObjectHandler {
 							transitions.add(new Transition(transitionFirstState, states.get(i), "", ""));
 
 							// Reset states
-							deselectAllZustaende();
+							deselectAllStates();
 							this.transitionFirstState = null;
 							transitionInProgress = false;
 							break;
@@ -180,7 +178,7 @@ public class ObjectHandler {
 						if ((transitions.get(i).isSelected() || transitions.get(i).isMoving()) && !m.m3Pressed()) {
 							if (m.m1Pressed()) {
 								transitions.get(i).setMoving(true);
-								transitions.get(i).setOffset(leftMouseLastX,leftMouseLastY, m.getX(), m.getY());
+								transitions.get(i).setOffset(leftMouseLastX, leftMouseLastY, m.getX(), m.getY());
 							} else if (!m.m1Pressed()) {
 								transitions.get(i).setMoving(false);
 								transitions.get(i).setSelected(true);
@@ -207,15 +205,15 @@ public class ObjectHandler {
 
 	public void screenShifter() {
 		if (m.m3Pressed()) {
-			shiftZustaendePos(m.getX() - middleMouseLastX, 0);
-			shiftZustaendePos(0, m.getY() - middleMouseLastY);
-			deselectAllZustaende();
+			shiftAllStates(m.getX() - middleMouseLastX, 0);
+			shiftAllStates(0, m.getY() - middleMouseLastY);
+			deselectAllStates();
 		}
 		middleMouseLastX = m.getX();
 		middleMouseLastY = m.getY();
 	}
 
-	public void zustandShifter() {
+	public void stateShifter() {
 		if (th.getCurrentTool() != null && states.size() > 0) {
 			if (th.getCurrentTool().equals(tools.EMPTY)) {
 				for (int i = 0; i < states.size(); i++) {
@@ -230,13 +228,11 @@ public class ObjectHandler {
 						}
 					}
 				}
-				leftMouseLastX = m.getX();
-				leftMouseLastY = m.getY();
 			}
 		}
 	}
 
-	public void shiftZustaendePos(int x, int y) {
+	public void shiftAllStates(int x, int y) {
 		float movingMultiplier = 1f;
 		if (states.size() > 0) {
 			for (int i = 0; i < states.size(); i++) {
@@ -245,8 +241,24 @@ public class ObjectHandler {
 			}
 		}
 	}
-
-	public void deselectAllZustaende() {
+	
+	public Boolean anyStateSelected() {
+		if (states.size() > 0) {
+			for (int i = 0; i < states.size(); i++) {
+				if(states.get(i).isSelected()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void resetMousePos() {
+		leftMouseLastX = m.getX();
+		leftMouseLastY = m.getY();
+	}
+	
+	public void deselectAllStates() {
 		if (this.states != null) {
 			for (int i = 0; i < states.size(); i++) {
 				states.get(i).setSelected(false);

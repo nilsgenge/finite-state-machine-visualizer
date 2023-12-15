@@ -68,11 +68,12 @@ public class Renderer extends JPanel {
 	}
 
 	public void update() {
+		main.m.updateMousePos();
 		oh.updateObjects();
 		gui.updateGui();
 		main.th.updateTool();
 	}
-	
+
 	public void subRender(Graphics2D g2) {
 		setBackground(colortable.BG_MAIN);
 		oh.renderObjects(g2);
@@ -87,14 +88,19 @@ public class Renderer extends JPanel {
 
 			g2.setRenderingHints(
 					new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
-			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION,RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY));
-			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY));
+			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION,
+					RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY));
+			g2.setRenderingHints(
+					new RenderingHints(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY));
 			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE));
-			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_FRACTIONALMETRICS,RenderingHints.VALUE_FRACTIONALMETRICS_ON));
+			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_FRACTIONALMETRICS,
+					RenderingHints.VALUE_FRACTIONALMETRICS_ON));
 			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE));
-			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
-			
+			g2.setRenderingHints(
+					new RenderingHints(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE));
+			g2.setRenderingHints(
+					new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+
 			// RENDER
 			subRender(g2);
 		}
