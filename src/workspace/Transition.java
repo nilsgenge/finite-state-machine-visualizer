@@ -177,7 +177,6 @@ public class Transition {
 				transformOffset -= mouseDistance;
 			}
 		}
-		System.out.println(mouseDistance);
 		checkTransformOffsetSize();
 	}
 

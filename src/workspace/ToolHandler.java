@@ -55,7 +55,6 @@ public class ToolHandler {
 			if (m.m2Pressed() && isInWorkspace(m.getM2X(), m.getM2Y())) {
 				if (currentTool != tools.EMPTY) {
 					this.setCurrentTool(tools.EMPTY);
-					System.out.println("Tool Changed to: " + getCurrentTool());
 				}
 				oh.deselectAllStates();
 				rightMouseLastX = m.getM2X();

@@ -46,11 +46,9 @@ public class ToolButton extends Button {
 		if (!toolChanged && th.getCurrentTool() != this.getType()) {
 			th.setCurrentTool(this.getType());
 			toolChanged = true;
-			System.out.println("Tool Changed to: " + th.getCurrentTool());
 		} else if (toolChanged) {
 			th.setCurrentTool(tools.EMPTY);
 			toolChanged = false;
-			System.out.println("Tool Changed to: " + th.getCurrentTool());
 		}
 	}
 

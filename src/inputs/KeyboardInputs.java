@@ -45,36 +45,80 @@ public class KeyboardInputs implements KeyListener {
 
 	private void initializeMap() {
 		// DELETE_KEY
-		addKeyListener(KeyEvent.VK_DELETE, new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				m.oh.objectDeleteTriggered();
-			}
+        addKeyListener(KeyEvent.VK_DELETE, () -> {
+        	m.oh.objectDeleteTriggered();
+        });
+        
+        // CONTROL_KEY
+        addKeyListener(KeyEvent.VK_BACK_SPACE, () -> {
+        	m.oh.objectDeleteTriggered();
+        });
+        
+        // CONTROL_KEY
+        addKeyListener(KeyEvent.VK_CONTROL, () -> {
+        	//action here
+        });
 
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
+        // ESCAPE_KEY
+        addKeyListener(KeyEvent.VK_ESCAPE, () -> {
+        	//action here
+        });
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-		});
-		// BACKSPACE_KEY
-		addKeyListener(KeyEvent.VK_BACK_SPACE, new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				m.oh.objectDeleteTriggered();
-			}
+        // SHIFT_KEY
+        addKeyListener(KeyEvent.VK_SHIFT, () -> {
+        	//action here
+        });
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-		});
+        // SPACE_KEY
+        addKeyListener(KeyEvent.VK_SPACE, () -> {
+        	//action here
+        });
+        
+    	// ALT_KEY
+        addKeyListener(KeyEvent.VK_ALT, () -> {
+        	//action here
+        });
+        
+        // ARROW_KEYS
+        addKeyListener(KeyEvent.VK_LEFT, () -> {
+        	//action here
+        });
+        addKeyListener(KeyEvent.VK_RIGHT, () -> {
+        	//action here
+        });
+        addKeyListener(KeyEvent.VK_UP, () -> {
+        	//action here
+        });
+        addKeyListener(KeyEvent.VK_DOWN, () -> {
+        	//action here
+        });
+        
+        //ALPHABET
+        for (char a = 'a'; a <= 'z'; a++) {
+        	final char currentChar = a;
+        	int keyCode = KeyEvent.getExtendedKeyCodeForChar(a);
+        	addKeyListener(keyCode, () -> {
+        		//action here
+        	});
+        }
 
 	}
+	
+	private void addKeyListener(int keyCode, Runnable action) {
+        addKeyListener(keyCode, new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == keyCode) {
+                    action.run();
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+    }
 
 }
