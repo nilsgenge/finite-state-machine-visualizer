@@ -26,6 +26,7 @@ public class ToolButton extends Button {
 
 	public void render(Graphics2D g2) {
 		renderButtonOutline(g2);
+		//cant be switch statement because case expression must be constant (error message)
 		if (type == tools.EMPTY) {
 
 		} else if (type == tools.STATE) {
@@ -34,11 +35,13 @@ public class ToolButton extends Button {
 			g2.drawLine(x + (int) (width * 0.3) + 1, y + height / 2 + 1, x + (int) (width * 0.7) + 1,y + height / 2 + 1);
 		} else if (type == tools.TRANSITION) {
 			g2.drawLine(x + width / 2 + 1, y + (int) (height * 0.3) + 1, x + width / 2 + 1,y + (int) (height * 0.7) + 1);
-		}
-		 else if (type == tools.START) {
-			 g2.setFont(new Font("Arial", Font.PLAIN, 65));
-				g2.setColor(colortable.TEXT);
-				g2.drawString("S", x+20, y+63);
+		} else if (type == tools.START) {
+			g2.setFont(new Font("Arial", Font.PLAIN, 65));
+			g2.setColor(colortable.TEXT);
+			g2.drawString("S", x+20, y+63);
+		} else if(type == tools.END) {
+			g2.drawOval(x + (int) (width * 0.15), y + (int) (height * 0.15), (int) (width * 0.7), (int) (height * 0.7));
+			g2.drawOval(x + (int) (width * 0.25), y + (int) (height * 0.25), (int) (width * 0.5), (int) (height * 0.5));
 		}
 	}
 

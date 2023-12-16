@@ -7,6 +7,8 @@ Welcome to the Finite State Machine (FSM) Visualizer, a powerful tool designed t
 
 ## Roadmap
 
+- [X] States can be declared as Start- or End-States
+
 - [X] transitions can be assigned names
 
 - [ ] states can be assigned names

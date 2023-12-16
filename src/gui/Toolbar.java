@@ -68,7 +68,7 @@ public class Toolbar {
 		toolButtons.add(new ToolButton(0 * buttonWidth + 1 * leftOffset, topOffset, buttonWidth, buttonHeight,"StateTool", tools.STATE, th));
 		toolButtons.add(new ToolButton(1 * buttonWidth + 2 * leftOffset, topOffset, buttonWidth, buttonHeight,"TransitionTool", tools.TRANSITION, th));
 		toolButtons.add(new ToolButton(2 * buttonWidth + 3 * leftOffset, topOffset, buttonWidth, buttonHeight, "StartTool",tools.START, th));
-		toolButtons.add(new ToolButton(3 * buttonWidth + 4 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
+		toolButtons.add(new ToolButton(3 * buttonWidth + 4 * leftOffset, topOffset, buttonWidth, buttonHeight, "EndTool",tools.END, th));
 		toolButtons.add(new ToolButton(4 * buttonWidth + 5 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
 		toolButtons.add(new ToolButton(5 * buttonWidth + 6 * leftOffset, topOffset, buttonWidth, buttonHeight, "Empty",tools.EMPTY, th));
 	}

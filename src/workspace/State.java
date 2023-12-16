@@ -12,7 +12,7 @@ public class State {
 
 	private String name;
 	private Boolean isStartState = false;
-	private Boolean startValueChanged = false;
+	private Boolean isEndState = false;
 	private Boolean isSelected = false;
 	private int xPos;
 	private int yPos;
@@ -30,19 +30,26 @@ public class State {
 		g2.setStroke(new BasicStroke(3));
 		int r = getRadius();
 		int r2 = getRadius() - 3;
+		g2.setColor(colortable.BG_MAIN); // inner circle, bg
+		g2.fillOval(getX() - r2, getY() - r2, r2 * 2, r2 * 2);
 		if (isSelected() || isMoving()) {
 			g2.setColor(colortable.HIGHLIGHT); // selected
 		} else {
 			g2.setColor(colortable.STROKE); // not selected
 		}
-		g2.fillOval(getX() - r, getY() - r, r * 2, r * 2);
-		g2.setColor(colortable.BG_MAIN); // inner circle, bg
-		g2.fillOval(getX() - r2, getY() - r2, r2 * 2, r2 * 2);
-		
-		if(isStartState) {
+		g2.drawOval(getX() - r, getY() - r, r * 2, r * 2);
+
+		if (isStartState) {
 			g2.setFont(new Font("Monospaced", Font.PLAIN, 50));
 			g2.setColor(colortable.TEXT);
-			g2.drawString("S", xPos-15, yPos+15);
+			g2.drawString("S", xPos - 15, yPos + 15);
+		} else if (isEndState) {
+			if (isSelected() || isMoving()) {
+				g2.setColor(colortable.HIGHLIGHT); // selected
+			} else {
+				g2.setColor(colortable.STROKE); // not selected
+			}
+			g2.drawOval(getX() - (int)(r * 0.8), getY() - (int)(r * 0.8), (int) (r * 2 * 0.8), (int) (r * 2 * 0.8));
 		}
 	}
 
@@ -120,14 +127,13 @@ public class State {
 	public void setStartState(boolean isStartState) {
 		this.isStartState = isStartState;
 	}
-	
-	public Boolean getStartValueChanged() {
-		return startValueChanged;
+
+	public Boolean isEndState() {
+		return isEndState;
 	}
 
-	public void setStartValueChanged(Boolean startValueChanged) {
-		this.startValueChanged = startValueChanged;
+	public void setEndState(Boolean isEndState) {
+		this.isEndState = isEndState;
 	}
-
 
 }

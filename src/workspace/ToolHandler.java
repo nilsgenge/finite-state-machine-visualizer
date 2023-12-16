@@ -32,6 +32,7 @@ public class ToolHandler {
 		checkNewState();
 		checkNewTransition();
 		checkNewStartState();
+		checkNewEndState();
 	}
 
 	public void addStringToTransition(String s) {
@@ -55,6 +56,14 @@ public class ToolHandler {
 		if (currentTool.equals(tools.START)) {
 			if (isNewInput("left", m.getM1X(), m.getM1Y()) && isInWorkspace(m.getM1X(), m.getM1Y())) {
 				oh.setNewStartState();
+			}
+		}
+	}
+	
+	public void checkNewEndState() {
+		if (currentTool.equals(tools.END)) {
+			if (isNewInput("left", m.getM1X(), m.getM1Y()) && isInWorkspace(m.getM1X(), m.getM1Y())) {
+				oh.setNewEndState();
 			}
 		}
 	}

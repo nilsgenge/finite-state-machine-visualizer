@@ -119,13 +119,29 @@ public class ObjectHandler {
 	public void setNewStartState() {
 		if (states.size() > 0 && anyStateSelected()) {
 			for (int i = 0; i < states.size(); i++) {
-				if(states.get(i).isStartState() && !states.get(i).isSelected()) {
+				if (states.get(i).isStartState() && !states.get(i).isSelected()) {
 					states.get(i).setStartState(false);
 				} else if (states.get(i).isStartState() && states.get(i).isSelected()) {
 					states.get(i).setStartState(false);
 					deselectAllStates();
 				} else if (!states.get(i).isStartState() && states.get(i).isSelected()) {
 					states.get(i).setStartState(true);
+					deselectAllStates();
+				}
+			}
+		}
+	}
+
+	public void setNewEndState() {
+		if (states.size() > 0 && anyStateSelected()) {
+			for (int i = 0; i < states.size(); i++) {
+				if (states.get(i).isEndState() && !states.get(i).isSelected()) {
+					states.get(i).setEndState(false);
+				} else if (states.get(i).isEndState() && states.get(i).isSelected()) {
+					states.get(i).setEndState(false);
+					deselectAllStates();
+				} else if (!states.get(i).isEndState() && states.get(i).isSelected()) {
+					states.get(i).setEndState(true);
 					deselectAllStates();
 				}
 			}

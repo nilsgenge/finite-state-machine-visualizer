@@ -25,7 +25,6 @@ public class Transition {
 		this.vorgaenger = vorgaenger;
 		this.nachfolger = nachfolger;
 		this.text = text;
-
 	}
 
 	public void update() {
@@ -95,7 +94,19 @@ public class Transition {
 	public void renderText(Graphics2D g2) {
 		g2.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		g2.setColor(colortable.TEXT);
-		g2.drawString(text, transformPointX, transformPointY - 15);
+		if (nachfolger.getX() >= vorgaenger.getX()) {
+			if (transformOffset >= 0) {
+				g2.drawString(text, transformPointX, transformPointY - 15);
+			} else {
+				g2.drawString(text, transformPointX, transformPointY + 25);
+			} 
+		} else {
+			if (transformOffset <= 0) {
+				g2.drawString(text, transformPointX, transformPointY - 15);
+			} else {
+				g2.drawString(text, transformPointX, transformPointY + 25);
+			} 
+		}
 	}
 
 	public void checkSelected(int mX, int mY) {

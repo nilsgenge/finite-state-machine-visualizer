@@ -7,5 +7,6 @@ public class tools {
 	public static String STATE = "State";
 	public static String TRANSITION = "Transition";
 	public static String START = "Start";
+	public static String END = "End";
 
 }

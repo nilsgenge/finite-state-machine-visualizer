@@ -3,7 +3,7 @@ package utilz;
 //Class for storing settings regarding the program
 public enum Settings {
 	//SETTINGS
-	PRINT_PERFORMANCE_UPDATES(true),
+	PRINT_PERFORMANCE_UPDATES(false),
 	ENABLE_DOUBLE_BUFFERING(true);
 	
 	
