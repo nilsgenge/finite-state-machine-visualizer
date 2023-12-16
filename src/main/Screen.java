@@ -21,10 +21,10 @@ public class Screen extends JFrame {
 
 		Container cp = getContentPane();
 		cp.add(r);
-
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
-		setTitle("Automaten Tool");
+		setTitle("Finite-State-Machine-Visualizer - See Github for Code");
 		setLocationRelativeTo(null);
 		setVisible(true);
 		addMouseListener(main.m);
