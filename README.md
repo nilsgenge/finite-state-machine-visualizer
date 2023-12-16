@@ -11,9 +11,9 @@ Welcome to the Finite State Machine (FSM) Visualizer, a powerful tool designed t
 
 - [ ] states can be assigned names
 
-- [ ] implement buffered rendering for a smoother experience with larger FSMs
+- [X] implement buffered rendering for a smoother experience with larger FSMs
 
-- [ ] saving and loading FSMs for larger Projects
+- [ ] saving and loading FSMs from file
 
 - [ ] undo / redo feature
 
