@@ -98,8 +98,6 @@ public class Renderer extends JPanel {
 			g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
 			g2.setRenderingHints(
 					new RenderingHints(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE));
-			g2.setRenderingHints(
-					new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
 
 			// RENDER
 			subRender(g2);

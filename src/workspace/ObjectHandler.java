@@ -97,7 +97,7 @@ public class ObjectHandler {
 		somethingSelected = false;
 	}
 
-	public void objectDeleteTriggered() {
+	public void objectDeleteTriggered() {	
 		for (int a = 0; a < states.size(); a++) {
 			if (states.get(a).isSelected()) {
 				for (int b = 0; b < transitions.size(); b++) {
@@ -152,7 +152,7 @@ public class ObjectHandler {
 						}
 						// if no transition found, add transition
 						if (!transitionExists && transitionFirstState != states.get(i)) {
-							transitions.add(new Transition(transitionFirstState, states.get(i), "", ""));
+							transitions.add(new Transition(transitionFirstState, states.get(i), ""));
 
 							// Reset states
 							deselectAllStates();
@@ -266,6 +266,24 @@ public class ObjectHandler {
 		}
 		m.resetLeftMousePosition();
 		this.transitionFirstState = null;
+	}
+	
+	public State getSelectedState() {
+		for (int c = 0; c < states.size(); c++) {
+			if (states.get(c).isSelected()) {
+				return states.get(c);
+			}
+		}
+		return null;
+	}
+	
+	public Transition getSelectedTransition() {
+		for (int c = 0; c < transitions.size(); c++) {
+			if (transitions.get(c).isSelected()) {
+				return transitions.get(c);
+			}
+		}
+		return null;
 	}
 
 }

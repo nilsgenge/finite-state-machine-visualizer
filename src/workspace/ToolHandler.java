@@ -34,6 +34,23 @@ public class ToolHandler {
 		checkNewStartState();
 	}
 
+	public void addStringToTransition(String s) {
+		if(oh.getSelectedTransition() != null) {
+			switch(s) {
+				case("DELETE"):
+					String oldString = oh.getSelectedTransition().getText();
+					if(oldString.length() > 0) {
+						String newString = oldString.substring(0, oldString.length() - 1);
+						oh.getSelectedTransition().setText(newString);
+					}
+					break;
+				default:
+					oh.getSelectedTransition().addString(s);
+					break;
+			} 			
+		}
+	}
+	
 	public void checkNewStartState() {
 		if (currentTool.equals(tools.START)) {
 			if (isNewInput("left", m.getM1X(), m.getM1Y()) && isInWorkspace(m.getM1X(), m.getM1Y())) {

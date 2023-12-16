@@ -51,7 +51,7 @@ public class KeyboardInputs implements KeyListener {
         
         // CONTROL_KEY
         addKeyListener(KeyEvent.VK_BACK_SPACE, () -> {
-        	m.oh.objectDeleteTriggered();
+        	m.th.addStringToTransition("DELETE");
         });
         
         // CONTROL_KEY
@@ -71,7 +71,7 @@ public class KeyboardInputs implements KeyListener {
 
         // SPACE_KEY
         addKeyListener(KeyEvent.VK_SPACE, () -> {
-        	//action here
+        	m.th.addStringToTransition(" ");
         });
         
     	// ALT_KEY
@@ -98,7 +98,7 @@ public class KeyboardInputs implements KeyListener {
         	final char currentChar = a;
         	int keyCode = KeyEvent.getExtendedKeyCodeForChar(a);
         	addKeyListener(keyCode, () -> {
-        		//action here
+        		m.th.addStringToTransition(String.valueOf(currentChar));
         	});
         }
 

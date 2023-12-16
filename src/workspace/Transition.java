@@ -10,8 +10,7 @@ public class Transition {
 
 	private State vorgaenger;
 	private State nachfolger;
-	private String eingabe;
-	private String ausgabe;
+	private String text;
 
 	private int hitboxSize = 40;
 	private boolean isSelected = false;
@@ -21,12 +20,11 @@ public class Transition {
 	private int transformOffset = 0;
 	private double angle;
 
-	public Transition(State vorgaenger, State nachfolger, String eingabe, String ausgabe) {
+	public Transition(State vorgaenger, State nachfolger, String text) {
 
 		this.vorgaenger = vorgaenger;
 		this.nachfolger = nachfolger;
-		this.eingabe = eingabe;
-		this.ausgabe = ausgabe;
+		this.text = text;
 
 	}
 
@@ -54,7 +52,8 @@ public class Transition {
 		} else {
 			g2.setColor(colortable.STROKE);
 		}
-		g2.fillOval(transformPointX - hitboxSize / 2, transformPointY - hitboxSize / 2, hitboxSize, hitboxSize);
+		g2.setStroke(new BasicStroke(1));
+		g2.drawOval(transformPointX - hitboxSize / 4, transformPointY - hitboxSize / 4, hitboxSize/2, hitboxSize/2);
 	}
 
 	public void calcTransformPoint() {
@@ -94,12 +93,9 @@ public class Transition {
 	}
 
 	public void renderText(Graphics2D g2) {
-		g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		g2.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		g2.setColor(colortable.TEXT);
-		int x = 0, y = 0;
-		x += getX1() + (transformPointX - getX1()) / 2;
-		y += getY1() + (transformPointY - getY1()) / 2;
-		g2.drawString(getEingabe() + " | " + getAusgabe(), x, y);
+		g2.drawString(text, transformPointX, transformPointY - 15);
 	}
 
 	public void checkSelected(int mX, int mY) {
@@ -222,20 +218,16 @@ public class Transition {
 		return nachfolger.getY();
 	}
 
-	public void setEingabe(String e) {
-		eingabe = e;
+	public String getText() {
+		return text;
 	}
 
-	public String getEingabe() {
-		return eingabe;
+	public void setText(String text) {
+		this.text = text;
 	}
-
-	public void setAusgabe(String a) {
-		ausgabe = a;
-	}
-
-	public String getAusgabe() {
-		return ausgabe;
+	
+	public void addString(String newString) {
+		this.text += newString;
 	}
 
 	public State getNachfolger() {

@@ -25,7 +25,7 @@ Welcome to the Finite State Machine (FSM) Visualizer, a powerful tool designed t
 
 - [ ] allow for colorcoding of states and transitions (also allows grouping)
 
-- [ ] export FMS as image/svg
+- [ ] export FSM as image/svg
 
 - [ ] allow for easy state resizing
 
