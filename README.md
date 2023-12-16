@@ -7,7 +7,9 @@ Welcome to the Finite State Machine (FSM) Visualizer, a powerful tool designed t
 
 ## Roadmap
 
-- [ ] transitions and states can be assigned names
+- [X] transitions can be assigned names
+
+- [ ] states can be assigned names
 
 - [ ] implement buffered rendering for a smoother experience with larger FSMs
 
