@@ -93,6 +93,12 @@ public class KeyboardInputs implements KeyListener {
         	//action here
         });
         
+        // Minus_KEY
+        addKeyListener(KeyEvent.VK_MINUS, () -> {
+        	m.th.addStringToTransition("-");
+        });
+        
+        
         //ALPHABET
         for (char a = 'a'; a <= 'z'; a++) {
         	final char currentChar = a;
@@ -101,7 +107,15 @@ public class KeyboardInputs implements KeyListener {
         		m.th.addStringToTransition(String.valueOf(currentChar));
         	});
         }
-
+        
+      //Numbers
+        for (char digit = '0'; digit <= '9'; digit++) {
+            final char currentDigit = digit;
+            int keyCode = KeyEvent.getExtendedKeyCodeForChar(digit);
+            addKeyListener(keyCode, () -> {
+                m.th.addStringToTransition(String.valueOf(currentDigit));
+            });
+        }
 	}
 	
 	private void addKeyListener(int keyCode, Runnable action) {
