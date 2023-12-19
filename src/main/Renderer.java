@@ -23,7 +23,7 @@ public class Renderer extends JPanel {
 		this.main = main;
 	}
 
-	public void render() {
+	public void runCycle() {
 		this.oh = main.oh;
 		this.gui = main.g;
 		double timePerFrame = 1000000000 / FPS_SET;

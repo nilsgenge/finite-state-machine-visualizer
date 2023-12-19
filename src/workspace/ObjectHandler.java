@@ -8,8 +8,6 @@ import utilz.tools;
 public class ObjectHandler {
 
 	MouseInputs m;
-	Transition u;
-	State z;
 	ToolHandler th;
 
 	LinkedList<Transition> transitions;
@@ -53,46 +51,47 @@ public class ObjectHandler {
 	}
 	
 	public void updateObjects() {
-		checkIfSelected();
+		updateStates();
+		updateTransitions();
+		
 		screenShifter();
 		stateShifter();
-		updateTransitions();
 		transitionShifter();
 		
 		resetMousePos();
 	}
 
 	public void updateTransitions() {
-		if (transitions.size() > 0) {
-			for (int i = 0; i < transitions.size(); i++) {
-				if (!somethingSelected) {
-					transitions.get(i).update();
-					transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
-					if (transitions.get(i).isSelected() || transitions.get(i).isMoving()) {
-						somethingSelected = true;
-						break;
-					} 
+		if (th.getCurrentTool() != null) {
+							transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
+							if (transitions.get(i).isSelected() || transitions.get(i).isMoving()) {
+								somethingSelected = true;
+								return;
+							}
+						}
+					}
 				}
 			}
 		}
 		somethingSelected = false;
 	}
 	
-	public void checkIfSelected() {
+	public void updateStates() {
 		if (th.getCurrentTool() != null) {
 			if (!th.getCurrentTool().equals(tools.STATE)) {
 				if (states.size() > 0) {
 					for (int i = 0; i < states.size(); i++) {
+						states.get(i).update();
 						if (!somethingSelected) {
 							states.get(i).checkSelected(m.getM1X(), m.getM1Y());
 							if (states.get(i).isSelected() || states.get(i).isMoving()) {
 								somethingSelected = true;
-								break;
-							} 
+								return;
+							}
 						}
 					}
 				}
-			}
+			} 
 		}
 		somethingSelected = false;
 	}
@@ -149,7 +148,6 @@ public class ObjectHandler {
 	}
 
 	public void setNewTransition() {
-		checkIfSelected();
 		if (states.size() > 0) {
 			transitionInProgress = (transitionFirstState != null);
 			for (int i = 0; i < states.size(); i++) {
@@ -168,8 +166,10 @@ public class ObjectHandler {
 						}
 						// if no transition found, add transition
 						if (!transitionExists && transitionFirstState != states.get(i)) {
-							transitions.add(new Transition(transitionFirstState, states.get(i), ""));
-
+							Transition newTransition = new Transition(transitionFirstState, states.get(i), "");
+							newTransition.update();
+							transitions.add(newTransition);
+							
 							// Reset states
 							deselectAllStates();
 							this.transitionFirstState = null;

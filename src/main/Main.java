@@ -25,7 +25,7 @@ public class Main {
 
 		//		oh.testobjects();
 		th.initialize();
-		r.render();
+		r.runCycle();
 	}
 
 }

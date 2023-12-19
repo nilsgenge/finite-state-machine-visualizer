@@ -2,6 +2,7 @@ package workspace;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import utilz.Vector2D;
 import utilz.colortable;
@@ -19,6 +20,10 @@ public class Transition {
 	private int transformPointY;
 	private int transformOffset = 0;
 	private double angle;
+	double distanceBetweenStates;
+	int textRenderRange = 200;
+	int transformPointRenderRenderRange = 200;
+	int arrowRenderRange = 100;
 
 	public Transition(State vorgaenger, State nachfolger, String text) {
 
@@ -31,28 +36,39 @@ public class Transition {
 		int deltaX = nachfolger.getX() - transformPointX;
 		int deltaY = nachfolger.getY() - transformPointY;
 		angle = Math.atan2(deltaY, deltaX);
-
+		
+		distanceBetweenStates = Math.sqrt(Math.pow(vorgaenger.getX() - nachfolger.getX(), 2)+ Math.pow(vorgaenger.getY() - nachfolger.getY(), 2));
+		
 		calcTransformPoint();
-		checkTransformOffsetSize();
+		checkTransformOffsetSize(distanceBetweenStates);
 	}
 
 	public void render(Graphics2D g2) {
+		//LINE
 		g2.setStroke(new BasicStroke(2));
 		g2.setColor(colortable.STROKE);
 		g2.drawLine(getX1(), getY1(), transformPointX, transformPointY);
 		g2.drawLine(transformPointX, transformPointY, getX2(), getY2());
+		
+		if(distanceBetweenStates > arrowRenderRange) {
+		drawArrow(g2);		
+		}
+		if(distanceBetweenStates > textRenderRange) {
+			renderText(g2);		
+		}
 
-		drawArrow(g2);
-		renderText(g2);
-
-		// hitbox test render
+		// HITBOX
+		if(distanceBetweenStates > transformPointRenderRenderRange) {
+		g2.setColor(colortable.BG_MAIN);
+		g2.fillOval(transformPointX - hitboxSize / 4, transformPointY - hitboxSize / 4, hitboxSize/2, hitboxSize/2);
 		if (isSelected) {
 			g2.setColor(colortable.HIGHLIGHT);
 		} else {
 			g2.setColor(colortable.STROKE);
 		}
-		g2.setStroke(new BasicStroke(1));
+//		g2.setStroke(new BasicStroke(1));
 		g2.drawOval(transformPointX - hitboxSize / 4, transformPointY - hitboxSize / 4, hitboxSize/2, hitboxSize/2);
+		}
 	}
 
 	public void calcTransformPoint() {
@@ -90,25 +106,7 @@ public class Transition {
 		yPoints[2] = secondY;
 		g2.fillPolygon(xPoints, yPoints, 3);
 	}
-
-	public void renderText(Graphics2D g2) {
-		g2.setFont(new Font("Monospaced", Font.PLAIN, 15));
-		g2.setColor(colortable.TEXT);
-		if (nachfolger.getX() >= vorgaenger.getX()) {
-			if (transformOffset >= 0) {
-				g2.drawString(text, transformPointX, transformPointY - 15);
-			} else {
-				g2.drawString(text, transformPointX, transformPointY + 25);
-			} 
-		} else {
-			if (transformOffset <= 0) {
-				g2.drawString(text, transformPointX, transformPointY - 15);
-			} else {
-				g2.drawString(text, transformPointX, transformPointY + 25);
-			} 
-		}
-	}
-
+	
 	public void checkSelected(int mX, int mY) {
 		double distClickToPoint = Math.sqrt(Math.pow(mX - transformPointX, 2) + Math.pow(mY - transformPointY, 2));
 		double distCircleToPoint = Math.sqrt(2 * Math.pow(hitboxSize / 2, 2));
@@ -118,8 +116,75 @@ public class Transition {
 			isSelected = false;
 		}
 	}
+	
+	public void checkTransformOffsetSize(double distanceBetweenStates) {
+		if (distanceBetweenStates < transformPointRenderRenderRange) {
+			transformOffset = 0;
+			return;
+		}
+		if (transformOffset > distanceBetweenStates) {
+			transformOffset = (int) distanceBetweenStates;
+		} else if (transformOffset < -distanceBetweenStates) {
+			transformOffset = -(int) distanceBetweenStates;
+		}
+	}
+
+	public void renderText(Graphics2D g2) {
+		g2.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		g2.setColor(colortable.TEXT);
+
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int stringWidth = fontMetrics.stringWidth(text);
+		
+		double lineAngle = Math.atan2(nachfolger.getY() - vorgaenger.getY(), nachfolger.getX() - vorgaenger.getX());
+		double PI = Math.PI;
+
+		int textX = 0;
+		int textY = 0;
+		int distToTransformPoint = 15;
+
+		// Split in angles and adjust transformOffset accordingly
+	// LEFT
+		if (lineAngle > -PI / 8 && lineAngle < PI / 8) {
+			textX = transformPointX - stringWidth / 2;
+			textY = transformPointY - distToTransformPoint;
+	// LEFT TOP
+		} else if (lineAngle > PI / 8 && lineAngle < 3 * PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY - distToTransformPoint + 2;
+	// TOP
+		} else if (lineAngle > 3 * PI / 8 && lineAngle < 5 * PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY + 2;
+	// RIGHT TOP
+		} else if (lineAngle > 5 * PI / 8 && lineAngle < 7 * PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY + distToTransformPoint + 2;
+	// RIGHT
+		} else if (lineAngle > 7 * PI / 8 || lineAngle < -7 * PI / 8) {
+			textX = transformPointX - stringWidth / 2;
+			textY = transformPointY - distToTransformPoint;
+	// RIGHT BOTTOM
+		} else if (lineAngle > -7 * PI / 8 && lineAngle < -5 * PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY - distToTransformPoint + 2;
+	// BOTTOM
+		} else if (lineAngle > -5 * PI / 8 && lineAngle < -3 * PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY + 2;
+	// LEFT BOTTOM
+		} else if (lineAngle > -3 * PI / 8 && lineAngle < -PI / 8) {
+			textX = transformPointX + distToTransformPoint;
+			textY = transformPointY + distToTransformPoint + 2;
+		}
+		g2.drawString(text, textX, textY);
+	}
 
 	public void setOffset(int x1, int y1, int x2, int y2) {
+		if (distanceBetweenStates < transformPointRenderRenderRange) {
+			transformOffset = 0;
+			return;
+		}
 		double deltaX = x2 - x1;
 		double deltaY = y2 - y1;
 
@@ -184,17 +249,7 @@ public class Transition {
 				transformOffset -= mouseDistance;
 			}
 		}
-		checkTransformOffsetSize();
-	}
-
-	public void checkTransformOffsetSize() {
-		double distanceBetweenStates = Math.sqrt(Math.pow(vorgaenger.getX() - nachfolger.getX(), 2)
-				+ Math.pow(vorgaenger.getY() - nachfolger.getY(), 2));
-		if (transformOffset > distanceBetweenStates) {
-			transformOffset = (int) distanceBetweenStates;
-		} else if (transformOffset < -distanceBetweenStates) {
-			transformOffset = -(int) distanceBetweenStates;
-		}
+		checkTransformOffsetSize(distanceBetweenStates);
 	}
 
 	public void setSelected(Boolean s) {

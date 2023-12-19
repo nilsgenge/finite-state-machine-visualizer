@@ -4,7 +4,7 @@ package utilz;
 public enum Settings {
 	//SETTINGS
 	PRINT_PERFORMANCE_UPDATES(false),
-	ENABLE_DOUBLE_BUFFERING(true);
+	ENABLE_DOUBLE_BUFFERING(false);
 	
 	
 	

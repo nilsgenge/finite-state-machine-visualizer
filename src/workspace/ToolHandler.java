@@ -6,7 +6,7 @@ import utilz.tools;
 
 public class ToolHandler {
 
-	private Main main;
+	protected Main main;
 	private ObjectHandler oh;
 	private MouseInputs m;
 

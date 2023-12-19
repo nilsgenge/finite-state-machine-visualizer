@@ -29,13 +29,12 @@ public class State {
 	public void render(Graphics2D g2) {
 		g2.setStroke(new BasicStroke(3));
 		int r = getRadius();
-		int r2 = getRadius() - 3;
-		g2.setColor(colortable.BG_MAIN); // inner circle, bg
-		g2.fillOval(getX() - r2, getY() - r2, r2 * 2, r2 * 2);
+		g2.setColor(colortable.BG_MAIN);
+		g2.fillOval(getX() - r, getY() - r, r * 2, r * 2);
 		if (isSelected() || isMoving()) {
-			g2.setColor(colortable.HIGHLIGHT); // selected
+			g2.setColor(colortable.HIGHLIGHT);
 		} else {
-			g2.setColor(colortable.STROKE); // not selected
+			g2.setColor(colortable.STROKE);
 		}
 		g2.drawOval(getX() - r, getY() - r, r * 2, r * 2);
 
@@ -45,12 +44,16 @@ public class State {
 			g2.drawString("S", xPos - 15, yPos + 15);
 		} else if (isEndState) {
 			if (isSelected() || isMoving()) {
-				g2.setColor(colortable.HIGHLIGHT); // selected
+				g2.setColor(colortable.HIGHLIGHT);
 			} else {
-				g2.setColor(colortable.STROKE); // not selected
+				g2.setColor(colortable.STROKE);
 			}
 			g2.drawOval(getX() - (int)(r * 0.8), getY() - (int)(r * 0.8), (int) (r * 2 * 0.8), (int) (r * 2 * 0.8));
 		}
+	}
+	
+	public void update() {
+		
 	}
 
 	public void checkSelected(int mx, int my) { // MouseX, MouseY as Input
