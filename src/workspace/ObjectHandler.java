@@ -63,6 +63,12 @@ public class ObjectHandler {
 
 	public void updateTransitions() {
 		if (th.getCurrentTool() != null) {
+			// TRANSITIONS
+			if (th.getCurrentTool().equals(tools.EMPTY)) {
+				if (transitions.size() > 0) {
+					for (int i = 0; i < transitions.size(); i++) {
+						transitions.get(i).update();
+						if (!somethingSelected) {
 							transitions.get(i).checkSelected(m.getM1X(), m.getM1Y());
 							if (transitions.get(i).isSelected() || transitions.get(i).isMoving()) {
 								somethingSelected = true;
